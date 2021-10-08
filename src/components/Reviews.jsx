@@ -65,7 +65,7 @@ export default function Reviews({ prodtId }) {
         <hr />
         <div className="reviewCont">
           {!Loading ? (
-            Review.map((review) => (
+            Review.reviews.map((review) => (
               <div
                 key={review._id}
                 className="my-1 d-flex flex-column p-2"

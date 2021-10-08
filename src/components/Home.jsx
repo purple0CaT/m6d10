@@ -36,6 +36,8 @@ const Home = () => {
   };
   //=FETCH page PRODUCTS
   const fetchPage = async (links) => {
+    // setCatLoad(false);
+    // setCatLoad(true);
     let url = `${process.env.REACT_APP_URLFETCHING}${links}`;
     try {
       let response = await fetch(url);
