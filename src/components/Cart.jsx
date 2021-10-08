@@ -10,7 +10,7 @@ export default function Cart({ LastAdd }) {
   const getCart = async () => {
     try {
       let response = await fetch(
-        `${process.env.REACT_APP_URLFETCHING}/cart/${userId}`
+        `${process.env.REACT_APP_URLFETCHING}/shoppingcart/${userId}`
       );
       if (response.ok) {
         let data = await response.json();
@@ -25,7 +25,7 @@ export default function Cart({ LastAdd }) {
   const deleteCart = async (prodId) => {
     try {
       let response = await fetch(
-        `${process.env.REACT_APP_URLFETCHING}/cart/${userId}/${prodId}`,
+        `${process.env.REACT_APP_URLFETCHING}/shoppingcart/${userId}/${prodId}`,
         { method: "" }
       );
       if (response.ok) {

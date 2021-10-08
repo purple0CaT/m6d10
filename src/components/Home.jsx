@@ -8,9 +8,9 @@ const Home = () => {
   const [LoadPageBtn, setLoadPageBtn] = useState(true);
   const [productsArray, setProductsArray] = useState([]);
   const [Page, setPage] = useState(1);
-  // const [Categ, setCateg] = useState();
+  const [Categ, setCateg] = useState([]);
   const [Search, setSearch] = useState(false);
-  // const [CatLoad, setCatLoad] = useState(true);
+  const [CatLoad, setCatLoad] = useState(true);
   const [CartAdd, setCartAdd] = useState({ userId: 1 });
   const [LastAdd, setLastAdd] = useState([]);
 
@@ -35,21 +35,20 @@ const Home = () => {
     }
   };
   //= FETCH CATEGORY
-  // const fetchCateg = async () => {
-  // try {
-  //   let response = await fetch(
-  //     `${process.env.REACT_APP_URLFETCHING}/categories`
-  //   );
-  //   if (response.ok) {
-  //     let data = await response.json();
-  //     setCateg(data);
-  //     setSearch(true);
-  //     setCatLoad(false);
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  // };
+  const fetchCateg = async () => {
+    try {
+      let response = await fetch(
+        `${process.env.REACT_APP_URLFETCHING}/category`
+      );
+      if (response.ok) {
+        let data = await response.json();
+        setCateg(data);
+        setCatLoad(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // === ADD TO CART
   // const addToCart12 = (prodId) => {
   //   console.log(prodId);
@@ -79,7 +78,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchProducts(Page);
-    // fetchCateg();
+    fetchCateg();
   }, []);
 
   return (
@@ -98,13 +97,17 @@ const Home = () => {
             onChange={(e) => fetchProducts(1, e.target.value)}
           >
             <option value="">none</option>
-            <option value="smartphone">Smartphone</option>
+            {/* <option value="smartphone">Smartphone</option>
             <option value="TV">TV</option>
             <option value="laptop">Laptop</option>
-            <option value="headphone">Headphones</option>
+            <option value="headphone">Headphones</option> */}
             {/* === CATEGORYS ==== */}
-            {/* {!CatLoad &&
-              Categ.map((c) => <option value={c.id}>{c.text}</option>)} */}
+            {!CatLoad &&
+              Categ.map((c) => (
+                <option key={c._id * 0.4} value={c._id}>
+                  {c.name}
+                </option>
+              ))}
           </Form.Control>
         </Col>
       </Row>

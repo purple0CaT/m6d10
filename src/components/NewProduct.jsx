@@ -11,6 +11,8 @@ const NewProduct = () => {
     category: "",
   });
   const [imgFile, setimgFile] = useState();
+  const [Categ, setCateg] = useState([]);
+  const [CategLoad, setCategLoad] = useState(true);
   const history = useHistory();
   const createNewProduct = async () => {
     try {
@@ -58,6 +60,24 @@ const NewProduct = () => {
     e.preventDefault();
     createNewProduct();
   };
+  //= FETCH CATEGORY
+  const fetchCateg = async () => {
+    try {
+      let response = await fetch(
+        `${process.env.REACT_APP_URLFETCHING}/category`
+      );
+      if (response.ok) {
+        let data = await response.json();
+        setCateg(data);
+        setCategLoad(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchCateg();
+  }, []);
 
   return (
     <Container className="new-product-container w-50" md="w-50">
@@ -104,10 +124,13 @@ const NewProduct = () => {
               setNewProduct({ ...newProduct, category: e.target.value })
             }
           >
-            <option>Phone</option>
-            <option>Not phone</option>
-            <option>Laptop</option>
-            <option>Not laptop</option>
+            <option>none</option>
+            {!CategLoad &&
+              Categ.map((c) => (
+                <option key={c._id * 2} value={c._id}>
+                  {c.name}
+                </option>
+              ))}
           </Form.Control>
         </Form.Group>
 
