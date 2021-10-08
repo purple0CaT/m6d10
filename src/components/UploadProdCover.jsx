@@ -15,7 +15,7 @@ export default function UploadProdCover({ id, fetchProduct }) {
 
     try {
       let response = await fetch(
-        `${process.env.REACT_APP_URLFETCHING}/products/${id}/uploadPhoto`,
+        `${process.env.REACT_APP_URLFETCHING}/products/${id}/upload`,
         {
           method: "POST",
           body: fileFormData,

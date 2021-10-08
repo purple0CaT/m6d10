@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Row, Col, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router";
 import UploadProdCover from "./UploadProdCover";
+import dateFormat from "dateformat";
+
 // import uniqid from "uniqid";
 
 const Product = ({ match }) => {
@@ -22,7 +24,7 @@ const Product = ({ match }) => {
       );
       if (response.ok) {
         const data = await response.json();
-        setProduct(data[0]);
+        setProduct(data);
         setLoading(false);
       }
     } catch (error) {
@@ -67,21 +69,38 @@ const Product = ({ match }) => {
             <Col xs="12" md={9} className="p-1">
               <img
                 className="product-details-cover w-100"
-                src={product.image}
+                src={product.imageUrl}
                 style={{ maxHeight: "20rem", objectFit: "contain" }}
                 alt="heeey"
               />
               <div className="p-2">
                 <h1 className="product-details-title">{product.name}</h1>
-                <h4 className="product-details-title">{product.brand}</h4>
-
+                <h4 className="product-details-title font-italic">
+                  {product.brand}
+                </h4>
+                <div className="d-flex justify-content-between">
+                  <p className="text-muted">
+                    Category:{" "}
+                    <span className="text-dark font-weight-bold">
+                      {product.category}
+                    </span>
+                  </p>
+                  <small className="text-muted">
+                    Published:{" "}
+                    <span className="text-dark font-weight-bold">
+                      {dateFormat(product.createdAt, "mmmm d, yyyy	")}
+                    </span>
+                  </small>
+                </div>
                 <div className="product-details-container">
                   <div className="product-details-author">
                     <p>{product.description}</p>
-                    Price: £{product.price}
-                  </div>
-                  <div className="product-details-info">
-                    <div>{product.created_at}</div>
+                    <p className="text-muted ml-5">
+                      Price:{" "}
+                      <span className="font-weight-bold text-dark">
+                        £{product.price}
+                      </span>
+                    </p>
                   </div>
                 </div>
                 <hr />

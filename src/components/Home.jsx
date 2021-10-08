@@ -7,25 +7,27 @@ import Cart from "./Cart";
 const Home = () => {
   const [LoadPageBtn, setLoadPageBtn] = useState(true);
   const [productsArray, setProductsArray] = useState([]);
-  // const [Pages, setPages] = useState({ pages: "0", curentP: 1 });
-  const [Categ, setCateg] = useState();
+  const [Page, setPage] = useState(1);
+  // const [Categ, setCateg] = useState();
   const [Search, setSearch] = useState(false);
-  const [CatLoad, setCatLoad] = useState(true);
+  // const [CatLoad, setCatLoad] = useState(true);
   const [CartAdd, setCartAdd] = useState({ userId: 1 });
   const [LastAdd, setLastAdd] = useState([]);
 
   //=FETCH ALL PRODUCTS
-  const fetchProducts = async (page, search) => {
-    let searchVal = typeof search !== "undefined" ? search : "";
+  const fetchProducts = async (page, category) => {
+    let url = `${process.env.REACT_APP_URLFETCHING}/products?&page=${page}${
+      (typeof category !== "undefined") & (category !== "")
+        ? `&category=${category}`
+        : ""
+    }`;
     try {
-      let response = await fetch(
-        `${process.env.REACT_APP_URLFETCHING}/products?search=${searchVal}&page=${page}`
-      );
+      let response = await fetch(url);
       if (response.ok) {
         let products = await response.json();
         setProductsArray(products);
         // setPages(products[1]);
-        setSearch(searchVal ? false : true);
+        // setSearch(searchVal ? false : true);
         setLoadPageBtn(false);
       }
     } catch (error) {
@@ -33,21 +35,21 @@ const Home = () => {
     }
   };
   //= FETCH CATEGORY
-  const fetchCateg = async () => {
-    // try {
-    //   let response = await fetch(
-    //     `${process.env.REACT_APP_URLFETCHING}/categories`
-    //   );
-    //   if (response.ok) {
-    //     let data = await response.json();
-    //     setCateg(data);
-    //     setSearch(true);
-    //     setCatLoad(false);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
+  // const fetchCateg = async () => {
+  // try {
+  //   let response = await fetch(
+  //     `${process.env.REACT_APP_URLFETCHING}/categories`
+  //   );
+  //   if (response.ok) {
+  //     let data = await response.json();
+  //     setCateg(data);
+  //     setSearch(true);
+  //     setCatLoad(false);
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  // }
+  // };
   // === ADD TO CART
   // const addToCart12 = (prodId) => {
   //   console.log(prodId);
@@ -76,8 +78,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchProducts(1);
-    fetchCateg();
+    fetchProducts(Page);
+    // fetchCateg();
   }, []);
 
   return (
@@ -96,8 +98,13 @@ const Home = () => {
             onChange={(e) => fetchProducts(1, e.target.value)}
           >
             <option value="">none</option>
-            {!CatLoad &&
-              Categ.map((c) => <option value={c.id}>{c.text}</option>)}
+            <option value="smartphone">Smartphone</option>
+            <option value="TV">TV</option>
+            <option value="laptop">Laptop</option>
+            <option value="headphone">Headphones</option>
+            {/* === CATEGORYS ==== */}
+            {/* {!CatLoad &&
+              Categ.map((c) => <option value={c.id}>{c.text}</option>)} */}
           </Form.Control>
         </Col>
       </Row>
@@ -108,8 +115,8 @@ const Home = () => {
           productsArray.map((product) => (
             <Col xs={12} md={4} className="my-3">
               <div className="myCard h-100 w-100 card">
-                <Link to={`/product/${product.id}`} className="anchorUnset">
-                  <Card.Img variant="top" src={product.image} />
+                <Link to={`/product/${product._id}`} className="anchorUnset">
+                  <Card.Img variant="top" src={product.imageUrl} />
                   <Card.Body className="px-3 pb-2 text-dark d-flex flex-column">
                     <Card.Title>
                       {product.brand} {product.name}
@@ -124,7 +131,7 @@ const Home = () => {
                   style={{ borderTop: "1px solid rgb(128,128,128, 0.5)" }}
                 >
                   <button
-                    onClick={(e) => addToCart(product.id)}
+                    onClick={(e) => addToCart(product._id)}
                     className="btn btn-info my-1"
                   >
                     Add to cart
