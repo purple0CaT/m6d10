@@ -8,7 +8,8 @@ const NewProduct = () => {
     description: "",
     brand: "",
     price: "",
-    category: "",
+    category: [],
+    imageUrl: "lorem.com",
   });
   const [imgFile, setimgFile] = useState();
   const [Categ, setCateg] = useState([]);
@@ -28,7 +29,7 @@ const NewProduct = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        submitForm(data.id);
+        submitForm(data[0].id);
       }
     } catch (error) {
       console.log(error);
@@ -37,11 +38,11 @@ const NewProduct = () => {
   // IMAGE
   const submitForm = async (id) => {
     const fileFormData = new FormData();
-    fileFormData.append("image", imgFile);
+    fileFormData.append("productImg", imgFile);
 
     try {
       let response = await fetch(
-        `${process.env.REACT_APP_URLFETCHING}/products/${id}/uploadPhoto`,
+        `${process.env.REACT_APP_URLFETCHING}/products/${id}/upload`,
         {
           method: "POST",
           body: fileFormData,
@@ -121,7 +122,7 @@ const NewProduct = () => {
             size="lg"
             as="select"
             onChange={(e) =>
-              setNewProduct({ ...newProduct, category: e.target.value })
+              setNewProduct({ ...newProduct, category: [e.target.value] })
             }
           >
             <option>none</option>

@@ -16,7 +16,7 @@ const Home = () => {
 
   //=FETCH ALL PRODUCTS
   const fetchProducts = async (page, category) => {
-    let url = `${process.env.REACT_APP_URLFETCHING}/products?&page=${page}${
+    let url = `${process.env.REACT_APP_URLFETCHING}/products?&offset=0&limit=6${
       (typeof category !== "undefined") & (category !== "")
         ? `&category=${category}`
         : ""
@@ -84,11 +84,13 @@ const Home = () => {
   return (
     <Container fluid="sm">
       {/* CART */}
-      <Cart lastCard={LastAdd} />
       {/* === */}
       <Row>
         <Col xs="12" md="9">
           <h1 className="blog-main-title">Welcomennnne</h1>
+        </Col>
+        <Col xs="12" md="3">
+          <Cart lastCard={LastAdd} />
         </Col>
         <Col xs="12" md="3">
           <Form.Control
@@ -115,7 +117,7 @@ const Home = () => {
         {LoadPageBtn ? (
           <Spinner className="mt-5" animation="border" role="status" />
         ) : (
-          productsArray.map((product) => (
+          productsArray.products.map((product) => (
             <Col xs={12} md={4} className="my-3">
               <div className="myCard h-100 w-100 card">
                 <Link to={`/product/${product._id}`} className="anchorUnset">

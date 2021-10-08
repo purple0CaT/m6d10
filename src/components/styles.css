@@ -103,9 +103,10 @@
 
 /* CART */
 .cart-btn {
-  position: absolute;
+  /* position: absolute;
   right: 1%;
-  top: 9%;
+  top: 9%; */
+  float: right;
   border-radius: 50% 2%/ 30%;
   width: 3rem;
   height: 3rem;
@@ -132,7 +133,7 @@
   border-radius: 20px;
   border: 1px solid rgba(128, 128, 128, 0.425);
   background-color: white;
-  z-index: 99;
+  z-index: 999;
   padding: 0.2rem 0.3rem;
   transition: 0.2s;
   box-shadow: 0 0 10px rgba(128, 128, 128, 0.425);
@@ -155,4 +156,16 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+/* MEIDA */
+@media screen and (max-width: 730px) {
+  .carts {
+    width: 80%;
+  }
+}
+@media screen and (max-width: 991px) and( min-width: 731px) {
+  .carts {
+    width: 50% !important;
+  }
 }
