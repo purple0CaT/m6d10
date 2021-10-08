@@ -6,7 +6,7 @@ import Cart from "./Cart";
 
 const Home = () => {
   const [LoadPageBtn, setLoadPageBtn] = useState(true);
-  const [productsArray, setProductsArray] = useState([]);
+  const [productsArray, setProductsArray] = useState();
   const [Page, setPage] = useState(1);
   const [Categ, setCateg] = useState([]);
   const [Search, setSearch] = useState(false);
@@ -15,7 +15,7 @@ const Home = () => {
   const [LastAdd, setLastAdd] = useState([]);
 
   //=FETCH ALL PRODUCTS
-  const fetchProducts = async (page, category) => {
+  const fetchProducts = async (links, category) => {
     let url = `${process.env.REACT_APP_URLFETCHING}/products?&offset=0&limit=6${
       (typeof category !== "undefined") & (category !== "")
         ? `&category=${category}`
@@ -26,9 +26,25 @@ const Home = () => {
       if (response.ok) {
         let products = await response.json();
         setProductsArray(products);
+        setLoadPageBtn(false);
         // setPages(products[1]);
         // setSearch(searchVal ? false : true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //=FETCH page PRODUCTS
+  const fetchPage = async (links) => {
+    let url = `${process.env.REACT_APP_URLFETCHING}${links}`;
+    try {
+      let response = await fetch(url);
+      if (response.ok) {
+        let products = await response.json();
+        setProductsArray(products);
         setLoadPageBtn(false);
+        // setPages(products[1]);
+        // setSearch(searchVal ? false : true);
       }
     } catch (error) {
       console.log(error);
@@ -147,26 +163,49 @@ const Home = () => {
           ))
         )}
       </Row>
-      {/* <Row className="justify-content-center my-3 gap">
-        {LoadPageBtn &&
-          Search &&
-          Array.from({ length: Math.ceil(Pages.pages / 5) }, (v, i) => i).map(
-            (m) => (
-              <Col
-                className="page text-center"
-                xs={1}
-                key={13 + m + "h123ffas"}
-              >
-                <button
-                  value={m + 1}
-                  onClick={(e) => fetchProducts(e.target.value)}
-                >
-                  {m + 1}
-                </button>
-              </Col>
-            )
-          )} */}
-      {/* </Row> */}
+      <Row className="justify-content-center my-3 gap">
+        {!LoadPageBtn && productsArray.links.prev && (
+          <Col className="page text-center" xs={1} key={13 + "h123ffas"}>
+            <button
+              value=""
+              onClick={(e) => fetchPage(productsArray.links.prev)}
+            >
+              Prev
+            </button>
+          </Col>
+        )}
+
+        {/* {!LoadPageBtn && productsArray.links.prev && (
+          <Col className="page text-center" xs={1} key={13 + "h123ffas"}>
+            <button
+              value=""
+              onClick={(e) => fetchPage(productsArray.links.prev)}
+            >
+              Prev
+            </button>
+          </Col>
+        )} */}
+        {!LoadPageBtn && productsArray.links.next && (
+          <Col className="page text-center" xs={1} key={13 + "h123ffas"}>
+            <button
+              value=""
+              onClick={(e) => fetchPage(productsArray.links.next)}
+            >
+              Next
+            </button>
+          </Col>
+        )}
+        {/* {!LoadPageBtn && productsArray.links.last && (
+          <Col className="page text-center" xs={1} key={13 + "h123ffas"}>
+            <button
+              value=""
+              onClick={(e) => fetchPage(productsArray.links.last)}
+            >
+              Last
+            </button>
+          </Col>
+        )} */}
+      </Row>
     </Container>
   );
 };
