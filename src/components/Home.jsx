@@ -7,7 +7,7 @@ import Cart from "./Cart";
 const Home = () => {
   const [LoadPageBtn, setLoadPageBtn] = useState(true);
   const [productsArray, setProductsArray] = useState([]);
-  const [Pages, setPages] = useState({ pages: "", curentP: 1 });
+  // const [Pages, setPages] = useState({ pages: "0", curentP: 1 });
   const [Categ, setCateg] = useState();
   const [Search, setSearch] = useState(false);
   const [CatLoad, setCatLoad] = useState(true);
@@ -23,8 +23,8 @@ const Home = () => {
       );
       if (response.ok) {
         let products = await response.json();
-        setProductsArray(products[0]);
-        setPages(products[1]);
+        setProductsArray(products);
+        // setPages(products[1]);
         setSearch(searchVal ? false : true);
         setLoadPageBtn(false);
       }
@@ -34,24 +34,24 @@ const Home = () => {
   };
   //= FETCH CATEGORY
   const fetchCateg = async () => {
-    try {
-      let response = await fetch(
-        `${process.env.REACT_APP_URLFETCHING}/categories`
-      );
-      if (response.ok) {
-        let data = await response.json();
-        setCateg(data);
-        setSearch(true);
-        setCatLoad(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   let response = await fetch(
+    //     `${process.env.REACT_APP_URLFETCHING}/categories`
+    //   );
+    //   if (response.ok) {
+    //     let data = await response.json();
+    //     setCateg(data);
+    //     setSearch(true);
+    //     setCatLoad(false);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   // === ADD TO CART
-  const addToCart12 = (prodId) => {
-    console.log(prodId);
-  };
+  // const addToCart12 = (prodId) => {
+  //   console.log(prodId);
+  // };
   const addToCart = async (prodId) => {
     await setCartAdd({ ...CartAdd, productId: prodId });
     try {
@@ -135,7 +135,7 @@ const Home = () => {
           ))
         )}
       </Row>
-      <Row className="justify-content-center my-3 gap">
+      {/* <Row className="justify-content-center my-3 gap">
         {LoadPageBtn &&
           Search &&
           Array.from({ length: Math.ceil(Pages.pages / 5) }, (v, i) => i).map(
@@ -153,8 +153,8 @@ const Home = () => {
                 </button>
               </Col>
             )
-          )}
-      </Row>
+          )} */}
+      {/* </Row> */}
     </Container>
   );
 };
